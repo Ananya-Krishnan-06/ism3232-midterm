@@ -20,3 +20,30 @@ jobs = [
 ]
 
 print("Brightline Print Shop - Job Report")
+
+job_count = 0
+proof_count = 0
+overnight_count = 0
+
+for job in jobs:
+    total = calculate_job_total(job["copy_price"], job["copies"], job["student_org"])
+    proof = requires_proof(total)
+    overnight = needs_overnight_run(job["copies"], total)
+
+    print(format_job_line(job["title"], total, proof, overnight))
+
+    job_count +=1
+    if proof:
+        proof_count += 1
+    if overnight:
+        overnight_count += 1
+
+invoiced = total_invoiced(jobs)
+average = invoiced / job_count
+
+print(f"Jobs: {job_count}")
+print(f"Total invoiced: ${invoiced:.2f}")
+print(f"Average job total: ${average:.2f}")
+print(f"Largest job total: {largest_job(jobs)}")
+print(f"Proofs required: {proof_count}")
+print(f"Overnight runs: {overnight_count}")
