@@ -1,11 +1,18 @@
 #business_rules.py
 #Author: Ananya Krishnan
 
+SETUP_FEE = 15.00
+SETUP_FEE_THRESHOLD = 40.00
+PROOF_THRESHOLD = 300.00
+OVERNIGHT_COPIES = 500
+OVERNIGHT_TOTAL = 400.00
+STUDENT_BONUS = 0.05
+
 def calculate_print_cost(copy_price: float, copies: int) -> float:
     """Return the print cost before any discount."""
     return copy_price*copies
 
-def get_volume_discount(copies: int, student org: bool = False) -> float:
+def get_volume_discount(copies: int, student_org: bool = False) -> float:
     """Return the discount rate as a decimal."""
     if copies >= 1000:
         rate = 0.15
@@ -71,5 +78,5 @@ def largest_job(jobs: list) -> str:
 def format_job_line(title: str, total: float, proof: bool, overnight_run: bool) -> str:
     """Return one report line"""
     proof_text = "yes" if proof else "no"
-    overnight_text = "yes" if overnight_run else "non"
+    overnight_text = "yes" if overnight_run else "no"
     return f"{title}: ${total:.2f} | proof: {proof_text} | overnight run: {overnight_text}"
