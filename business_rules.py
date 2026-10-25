@@ -9,7 +9,7 @@ OVERNIGHT_TOTAL = 400.00
 STUDENT_BONUS = 0.05
 
 def calculate_print_cost(copy_price: float, copies: int) -> float:
-    """Return the print cost before any discount."""
+    """Return the cost before any discount."""
     return copy_price*copies
 
 def get_volume_discount(copies: int, student_org: bool = False) -> float:
@@ -39,7 +39,7 @@ def calculate_job_total(copy_price: float, copies: int, student_org: bool = Fals
 
 
 def requires_proof(total: float) -> bool:
-    """Return True when the job total requires a printed proof"""
+    """Return True when the job total requires a proof"""
     return total > PROOF_THRESHOLD
 
 
@@ -47,30 +47,28 @@ def needs_overnight_run(copies: int, total: float) -> bool:
     """Return True when the job needs an overnight press run."""
     return copies > OVERNIGHT_COPIES or total > OVERNIGHT_TOTAL
 
-
-def _job_total(job: dict) -> float:
-    """Helper: compute the total for one job dict."""
-    return calculate_job_total(
-        job["copy_price"],
-        job["copies"],
-        job.get("student_org", False),
-    )
-
-
 def total_invoiced(jobs: list) -> float:
     """Return the sum of the job totals for every job in the list."""
     total = 0.0
     for job in jobs:
-        total += _job_total(job)
+        total += calculate_job_total(
+            job["copy_price"],
+            job["copies"],
+            job.get("student_org", False),
+        )
     return round(total, 2)
 
 def largest_job(jobs: list) -> str:
-    """Return the title of the job with the largest total (first win ties)."""
+    """Return the title of the job with the largest total."""
     best_title = ""
-    best_total = None 
+    best_total = None
     for job in jobs:
-        total = _job_total(job)
-        if best_total is None or total > best_total:
+        total = calculate_job_total(
+            job["copy_price"],
+            job["copies"],
+            job.get("student_org", False),
+        )
+        if best_total is None or total > best_total:  # strict > keeps the earlier job on ties
             best_total = total
             best_title = job["title"]
     return best_title
