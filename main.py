@@ -1,12 +1,11 @@
 from business_rules import (
     calculate_job_total,
-    requires_proof,
-    needs_overnight_run,
-    total_invoiced,
-    largest_job,
     format_job_line,
+    largest_job,
+    needs_overnight_run,
+    requires_proof,
+    total_invoiced,
 )
-
 
 jobs = [
     {"title": "Flyers", "copy_price": 0.25, "copies": 100, "student_org": False},
@@ -32,7 +31,7 @@ for job in jobs:
 
     print(format_job_line(job["title"], total, proof, overnight))
 
-    job_count +=1
+    job_count += 1
     if proof:
         proof_count += 1
     if overnight:
